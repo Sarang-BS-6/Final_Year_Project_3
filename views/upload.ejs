@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Image</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="./upload.css">
+</head>
+<body>
+    <div class="upload-section">
+        <h1>Upload Image</h1>
+        <div id="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+        <div id="image-preview"></div>
+        <form method="post" action="/upload" id="upload-form" enctype="multipart/form-data">
+            <label for="image-input" class="file-upload">Select Image</label>
+            <input type="file" id="image-input" name="image" onchange="previewImage(event)">
+            <div class="upload-buttons">
+                <button class="cancel-button" type="button" onclick="cancelUpload()">Cancel</button>
+                <input class="submit-button" type="submit" value="Upload">
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Function to preview the selected image
+        function previewImage(event) {
+            var input = event.target;
+            var reader = new FileReader();
+    
+            reader.onload = function(){
+                var img = document.createElement('img');
+                img.src = reader.result;
+                img.id = 'preview';
+                img.style.maxWidth = '100%';
+                img.style.maxHeight = '200px'; // Adjust as needed
+                document.getElementById('image-preview').innerHTML = ''; // Clear previous preview
+                document.getElementById('image-preview').appendChild(img);
+                document.getElementById('image-preview').style.display = 'block';
+                document.querySelector('.upload-section').classList.add('chosen-file');
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+
+        // Function to cancel the upload
+        function cancelUpload() {
+            // Remove the uploaded image
+            document.getElementById('image-preview').innerHTML = '';
+            // Hide the image-preview section
+            document.getElementById('image-preview').style.display = 'none';
+            // Clear the file input
+            document.getElementById('image-input').value = '';
+        }
+    </script>
+</body>
+</html>
